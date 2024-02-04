@@ -1,0 +1,146 @@
+// Fetching user's ATC session informations from API
+let userSession = {};
+
+fetch(ATC_API_URL, {}).then(response => response.json).then(result => {
+    for (let session of result["items"]) {
+        // Separate each session by it's connection ID
+        let session_id = session["connection_id"]["id"];
+        userSession[session_id] = session;
+
+        // Long line. Not in the whole file, but still bad
+        // Open to any suggestions about fix it
+        let sessionElement = "<div id='" + session_id + "' class='fox_button fox_atc mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + session["connection_id"]["callsign"] + "</div>";
+        $("#fox_atc").append(sessionElement);
+    }
+
+    showSession(userSession[result["items"][0]["callsign"]]);
+});
+
+// Fetching user's flightplans from VATSIM API
+let userFlightplans = {};
+
+fetch(FLIGHTPLANS_API_URL, {}).then(response => response.json).then(result => {
+    for (let flightplan of result) {
+        // Separate each flight by it's connection ID
+        // Like it was with ATC session's
+        let flightplan_id = flightplan["connection_id"]
+        userFlightplans[flightplan_id] = flightplan;
+        
+        // Long line again
+        let flightplanElement = "<div id="+ flightplan_id +" class='fox_button mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + flightplan["callsign"] + "</div>";
+        $("#fox_flightplans").append(flightplanElement);
+    }
+    showFlight(userFlightplans[result[0]["callsign"]]);
+});
+
+// Fetching airports information
+// Get it from localhost
+// Becase I think it would be much faster than getting it from VATSIM API
+let airports = {};
+
+$.getJSON("/static/data/airports.json", function(json) {
+        airports = json;
+    }
+);
+
+// Map creation
+const MAP_ELEMENT = L.map("fox_map");
+const MAP_DEFAULT_TARGET = L.latLng("47.50737", "19.04611");
+const MAP_DEFAULT_ZOOM_VIEW = 14;
+let line = null;
+
+MAP_ELEMENT.setView(MAP_DEFAULT_TARGET, MAP_DEFAULT_ZOOM_VIEW);
+
+L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+    subdomains: "abcd",
+    maxZoom: 20,
+    minZoom: 2
+}).addTo(MAP_ELEMENT);
+
+// Function to delete route line from map
+function mapDeleteDraws() {
+    if (!line) return;
+    MAP_ELEMENT.removeLayer(line);
+    line = null;
+}
+
+// Function to draw flight path on map
+function mapDrawFlight(flight) {
+    if (!flight) return;
+    mapDeleteDraws();
+
+    let departureAirport = flight["dep"];
+    let arrivalAirport = flight["arr"];
+
+    line = L.polyline([
+        [
+            airports[departureAirport]["lat"],
+            airports[departureAirport]["lon"]
+        ],
+        [
+            airports[arrivalAirport]["lat"],
+            airports[arrivalAirport]["lon"]
+        ]
+    ], {color: "red"}).addTo(MAP_ELEMENT);
+
+    MAP_ELEMENT.fitBounds(line.getBounds());
+}
+
+// Function to show data in right flight bar
+function showFlight(flight) {
+    if (!flight) return;
+
+    // Changing text in each class
+    // FP before _ - means flightplan
+    $(".fp_callsign").text(flight["callsign"]);
+    $(".fp_depa_city").text(airports[flight["dep"]]["city"]);
+    $(".fp_arra_city").text(airports[flight["arr"]]["city"]);
+    $(".fp_aicraft").text(flight["aircraft"]);
+    $(".fp_entime").text(flight["hrsenroute"] + ":" + flight["minenroute"]);
+    $(".fp_depa").text(flight["dep"]);
+    $(".fp_arra").text(flight["arr"]);
+    $(".fp_altna").text(flight["alt"]);
+    $(".fp_type").text(flight["flight_type"]);
+    $(".fp_speed").text(flight["cruisespeed"]);
+    $(".fp_alt").text(flight["altitude"]);
+    $(".fp_route").text(flight["route"]);
+    $(".fp_remarks").text(flight["rmks"]);
+    $(".fp_squawk").text(flight["assignedsquawk"]);
+    $(".fp_filed").text(flight["filed"].replace("T", " "));
+
+    mapDrawFlight(flight);
+}
+
+// Function to show ATC session 
+function showSession(session) {
+    if (!session) return;
+
+    $(".atc_callsign").text(session["connection_id"]["callsign"]);
+    $(".atc_start_time").text(session["connection_id"]["start"]);
+    $(".atc_end_time").text(session["connection_id"]["end"]);
+    $(".atc_trackedair").text(session["aircrafttracked"]);
+    $(".atc_seenair").text(session["aircraftseen"]);
+    $(".atc_squawks").text(session["squawksassigned"]);
+    $(".atc_transfers").text(session["handoffsinitiated"]);
+    $(".atc_received").text(session["handoffsreceived"]);
+}
+
+// Click event handler to left menu button
+$(".fox_atc").click(function() {
+    if ($(this).hasClass("fox_atc_active")) return;
+    
+    $(".fox_atc_active").removeClass("fox_atc_active");
+    $(this).addClass("fox_atc_active");
+
+    showSession(userSession[$(this).attr("id")]);
+})
+
+$(".fox_button").click(function() {
+    if ($(this).hasClass("fox_active")) return;
+
+    $(".fox_active").removeClass("fox_active");
+    $(this).addClass("fox_active");
+
+    showFlight(userFlightplans[$(this).attr("id")]);
+});

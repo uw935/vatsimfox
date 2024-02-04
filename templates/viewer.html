@@ -1,0 +1,140 @@
+{% extends "/include/template.html" %}
+{% block title %}User {{user_cid}} statistic — VATSIM Fox{% endblock %}
+{% block header_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='viewer.css') }}">
+<link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
+{% endblock %}
+{% block content %}
+<div class="mb-5">
+    <h2 class="text-center text-primary mb-4">{{data[0]["id"]}}</h2>
+    <p class="fs-4 text-secondary">Date of registration: <span class="date_registration"></span></p>
+</div>
+
+<div class="mb-4 row align-items-md-stretch">
+    <h3 class="mb-3">Last 50 flightplans</h3>
+    <div id="fox_flightplans" class="mb-4 col-md-3"></div>
+
+    <div class="col-md" style="height: 500px; overflow-y: scroll;">
+        <div id="fox_map" class="mb-4 h-50 bg-dark rounded-3">
+        </div>
+        <div class="h-auto p-5 bg-light border rounded-3">
+            <h2><span class="fp_callsign">Flight</span> — from <span class="fp_depa_city"></span> to <span class="fp_arra_city"></span></h2>
+            <span>
+                <b>Aircraft type:</b> 
+                <span class="fp_aicraft"></span>
+            </span>
+            <br>
+            <span>
+                <b>Enroute time:</b> 
+                <span class="fp_entime"></span>
+            </span>
+            <br>
+            <span>
+                <b>Departure airport:</b> 
+                <span class="fp_depa"></span>
+            </span>
+            <br>
+            <span>
+                <b>Arrival airport:</b> 
+                <span class="fp_arra"></span>
+            </span>
+            <br>
+            <span>
+                <b>Alternative airport:</b> 
+                <span class="fp_altna"></span>
+            </span>
+            <br>
+            <span>
+                <b>Flight type:</b> 
+                <span class="fp_type"></span>
+            </span>
+            <br>
+            <span>
+                <b>Cruise speed:</b> 
+                <span class="fp_speed"></span> knots
+            </span>
+            <br>
+            <span>
+                <b>Flight altitude:</b> 
+                <span class="fp_alt"></span> feet
+            </span>
+            <br>
+            <span>
+                <b>Route:</b> 
+                <span class="fp_route"></span>
+            </span>
+            <br>
+            <span>
+                <b>Remarks:</b> 
+                <span class="fp_remarks"></span>
+            </span>
+            <br>
+            <span>
+                <b>Squawk:</b> 
+                <span class="fp_squawk"></span>
+            </span>
+            <br>
+            <span>
+                <b>Fligthplan filed at:</b> 
+                <span class="fp_filed"></span>
+            </span>
+            <br>     
+        </div>
+    </div>
+</div>
+<div class="mb-4 row align-items-md-stretch">
+    <h3 class="mb-3">Last 100 ATC shifts</h3>
+    <div id="fox_atc" class="mb-4 col-md-3"></div>
+
+    <div class="col-md" style="height: 321px;">
+        <div class="h-auto p-5 bg-light border rounded-3">
+            <h2 class="atc_callsign">UUEE_DEL</h2>
+            <span>
+                <b>Start time:</b> 
+                <span class="atc_start_time">2024-01-05T16:11:22Z</span>
+            </span>
+            <br>
+            <span>
+                <b>End time:</b> 
+                <span class="atc_end_time">2024-01-05T16:32:46Z</span>
+            </span>
+            <br>
+            <span>
+                <b>Aircraft tracked:</b> 
+                <span class="atc_trackedair">7</span>
+            </span>
+            <br>
+            <span>
+                <b>Aircraft seen:</b> 
+                <span class="atc_seenair">35</span>
+            </span>
+            <br>
+            <span>
+                <b>Squawk assigned:</b> 
+                <span class="atc_squawks">12</span>
+            </span>
+            <br>
+            <span>
+                <b>Aircraft's transferred:</b> 
+                <span class="atc_transfers">3</span>
+            </span>
+            <br>
+            <span>
+                <b>Aircraft's received:</b> 
+                <span class="atc_received">0</span>
+            </span>
+        </div>
+    </div>
+</div>
+{% endblock %}      
+{% block javascript_code %}
+<script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
+<script type="text/javascript">
+    const USER_CID = '{{data[0]["id"]}}';
+    const FLIGHTPLANS_API_URL = "https://api.vatsim.net/v2/members/" + USER_CID + "/flightplans";
+    const ATC_API_URL = "https://api.vatsim.net/v2/members/" + USER_CID + "/atc";
+
+    $(".date_registration").text("{{data[0]['reg_date']}}".replace("T", " "));
+</script>
+<script type="text/javascript" src="{{ url_for('static', filename='viewer.js') }}"></script>
+{% endblock %}

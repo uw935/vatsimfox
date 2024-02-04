@@ -1,0 +1,52 @@
+{% extends "/include/template.html" %}
+{% block title %}VATSIM Fox — view detailed profile statistic{% endblock %}
+{% block content %}
+<div class="p-5 mb-4 bg-light rounded-3">
+  <div class="container-fluid py-5">
+    <h1 class="display-5 fw-bold">Enter your VATSIM CID</h1>
+    <p class="col-md-8 fs-4">See your detailed profile statistic</p>
+    <div class="d-flex" role="search">
+      <input class="fox_input form-control me-2" type="number" placeholder="100000" aria-label="CID">
+      <button class="fox_submit btn btn-outline-success" type="submit">Search</button>
+    </div>
+    <p class="fox_message col-md-8 fs-4"></p>
+  </div>
+</div>
+
+<div class="mb-4 row align-items-md-stretch">
+  <div class="col-md-6">
+    <div class="h-100 p-5 text-bg-dark rounded-3">
+      <h2>About</h2>
+      <p>VATSIM Fox is an open-source project to make it easier for users to see their detailed profile statistic</p>
+    </div>
+  </div>
+  <div class="col-md-6">
+      <div class="h-100 p-5 bg-light border rounded-3">
+          <h2>Open source project</h2>
+          <p>This project is fully opened, so you can contribute in it if you want</p>
+          <a href="https://github.com/uw935/vatsim-fox">
+            <button class="btn btn-outline-secondary" type="button">GitHub</button>
+          </a>
+      </div>
+  </div>
+</div>
+{% endblock %}
+{% block javascript_code %}
+<script type="text/javascript">
+    $(".fox_submit").click(function() {
+        const INPUT_CID = $(".fox_input").val();
+
+        fetch("https://api.vatsim.net/v2/members/" + INPUT_CID, {})
+        .then(response => response.json()).then(result => {
+            // Checking if user existt
+            if (!result.ok || result.status == 404) {
+                $(".fox_message").text("User not found!");
+                return;
+            }
+            
+            // Redirecting user to view page
+            window.location.replace("/" + INPUT_CID);
+        });
+    });
+</script>
+{% endblock %}

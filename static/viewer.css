@@ -1,0 +1,8 @@
+.fox_button {
+    transition: all .3s ease;
+    cursor: pointer;
+}
+
+.fox_active, .fox_atc_active {
+    background-color: #dee2e6 !important;
+}
