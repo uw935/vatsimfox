@@ -6,10 +6,10 @@
     <h1 class="display-5 fw-bold">Enter your VATSIM CID</h1>
     <p class="col-md-8 fs-4">See your detailed profile statistic</p>
     <div class="d-flex" role="search">
-      <input class="fox_input form-control me-2" type="number" placeholder="100000" aria-label="CID">
-      <button class="fox_submit btn btn-outline-success" type="submit">Search</button>
+        <input class="fox_input form-control me-2" type="number" placeholder="100000" aria-label="CID">
+        <button class="fox_submit btn btn-outline-success" type="submit">Search</button>
     </div>
-    <p class="fox_message col-md-8 fs-4"></p>
+    <p class="fox_message text-primary col-md-8 fs-4"></p>
   </div>
 </div>
 
@@ -34,12 +34,17 @@
 {% block javascript_code %}
 <script type="text/javascript">
     $(".fox_submit").click(function() {
-        const INPUT_CID = $(".fox_input").val();
+        const INPUT_CID = 0 + $(".fox_input").val();
 
-        fetch("https://api.vatsim.net/v2/members/" + INPUT_CID, {})
+        if ((0 + INPUT_CID) < 100000) {
+          $(".fox_message").text("CID should be equal or more than 100000");
+          return;
+        }
+
+        fetch("/api/request?request_string=members/" + INPUT_CID, {})
         .then(response => response.json()).then(result => {
-            // Checking if user existt
-            if (!result.ok || result.status == 404) {
+            // Checking if user exist
+            if (result.result == "not found" || result.detail == "Not Found") {
                 $(".fox_message").text("User not found!");
                 return;
             }
