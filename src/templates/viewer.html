@@ -15,10 +15,13 @@
     <div id="fox_flightplans" class="mb-4 col-md-3"></div>
 
     <div class="col-md" style="height: 500px; overflow-y: scroll;">
-        <div id="fox_map" class="mb-4 h-50 bg-dark rounded-3">
-        </div>
+        <div id="fox_map" class="mb-4 h-50 bg-dark rounded-3"></div>
         <div class="h-auto p-5 bg-light border rounded-3">
             <h2><span class="fp_callsign">Flight</span> — from <span class="fp_depa_city"></span> to <span class="fp_arra_city"></span></h2>
+            <span>
+                <b class="fp_is_filed"></b>
+            </span>
+            <br>
             <span>
                 <b>Aircraft type:</b> 
                 <span class="fp_aicraft"></span>
@@ -91,37 +94,37 @@
             <h2 class="atc_callsign">UUEE_DEL</h2>
             <span>
                 <b>Start time:</b> 
-                <span class="atc_start_time">2024-01-05T16:11:22Z</span>
+                <span class="atc_start_time"></span>
             </span>
             <br>
             <span>
                 <b>End time:</b> 
-                <span class="atc_end_time">2024-01-05T16:32:46Z</span>
+                <span class="atc_end_time"></span>
             </span>
             <br>
             <span>
                 <b>Aircraft tracked:</b> 
-                <span class="atc_trackedair">7</span>
+                <span class="atc_trackedair"></span>
             </span>
             <br>
             <span>
                 <b>Aircraft seen:</b> 
-                <span class="atc_seenair">35</span>
+                <span class="atc_seenair"></span>
             </span>
             <br>
             <span>
                 <b>Squawk assigned:</b> 
-                <span class="atc_squawks">12</span>
+                <span class="atc_squawks"></span>
             </span>
             <br>
             <span>
                 <b>Aircraft's transferred:</b> 
-                <span class="atc_transfers">3</span>
+                <span class="atc_transfers"></span>
             </span>
             <br>
             <span>
                 <b>Aircraft's received:</b> 
-                <span class="atc_received">0</span>
+                <span class="atc_received"></span>
             </span>
         </div>
     </div>
@@ -131,8 +134,8 @@
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script type="text/javascript">
     const USER_CID = '{{data[0]["id"]}}';
-    const FLIGHTPLANS_API_URL = "https://api.vatsim.net/v2/members/" + USER_CID + "/flightplans";
-    const ATC_API_URL = "https://api.vatsim.net/v2/members/" + USER_CID + "/atc";
+    const FLIGHTPLANS_API_URL = "/api/request?request_string=members/" + USER_CID + "/flightplans";
+    const ATC_API_URL = "/api/request?request_string=members/" + USER_CID + "/atc";
 
     $(".date_registration").text("{{data[0]['reg_date']}}".replace("T", " "));
 </script>

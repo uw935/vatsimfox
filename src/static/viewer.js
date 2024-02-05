@@ -1,7 +1,10 @@
 // Fetching user's ATC session informations from API
 let userSession = {};
 
-fetch(ATC_API_URL, {}).then(response => response.json).then(result => {
+fetch(ATC_API_URL, {}).then(response => response.json()).then(result => {
+    if (result && result["result"] == "not found")
+        return
+
     for (let session of result["items"]) {
         // Separate each session by it's connection ID
         let session_id = session["connection_id"]["id"];
@@ -13,24 +16,48 @@ fetch(ATC_API_URL, {}).then(response => response.json).then(result => {
         $("#fox_atc").append(sessionElement);
     }
 
-    showSession(userSession[result["items"][0]["callsign"]]);
+    // Click event handler to left menu button
+    $(".fox_atc").click(function() {
+        if ($(this).hasClass("fox_atc_active")) return;
+        
+        $(".fox_atc_active").removeClass("fox_atc_active");
+        $(this).addClass("fox_atc_active");
+
+        showSession(userSession[$(this).attr("id")]);
+    });
+
+    showSession(result["items"][0]);
 });
 
 // Fetching user's flightplans from VATSIM API
 let userFlightplans = {};
 
-fetch(FLIGHTPLANS_API_URL, {}).then(response => response.json).then(result => {
+fetch(FLIGHTPLANS_API_URL, {}).then(response => response.json()).then(result => {
+    if (result && result["result"] == "not found")
+        return
+
     for (let flightplan of result) {
         // Separate each flight by it's connection ID
         // Like it was with ATC session's
-        let flightplan_id = flightplan["connection_id"]
+        let flightplan_id = flightplan["id"]
         userFlightplans[flightplan_id] = flightplan;
+        userFlightplans[flightplan_id]["not_filed"] = flightplan["connection_id"] === 0
         
         // Long line again
         let flightplanElement = "<div id="+ flightplan_id +" class='fox_button mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + flightplan["callsign"] + "</div>";
         $("#fox_flightplans").append(flightplanElement);
     }
-    showFlight(userFlightplans[result[0]["callsign"]]);
+
+    $(".fox_button").click(function() {
+        if ($(this).hasClass("fox_active")) return;
+    
+        $(".fox_active").removeClass("fox_active");
+        $(this).addClass("fox_active");
+    
+        showFlight(userFlightplans[$(this).attr("id")]);
+    });
+
+    showFlight(result[0]);
 });
 
 // Fetching airports information
@@ -93,6 +120,7 @@ function showFlight(flight) {
 
     // Changing text in each class
     // FP before _ - means flightplan
+    $(".fp_is_filed").text(flight["not_filed"] ? "This flightplan was not filed" : "");
     $(".fp_callsign").text(flight["callsign"]);
     $(".fp_depa_city").text(airports[flight["dep"]]["city"]);
     $(".fp_arra_city").text(airports[flight["arr"]]["city"]);
@@ -117,30 +145,11 @@ function showSession(session) {
     if (!session) return;
 
     $(".atc_callsign").text(session["connection_id"]["callsign"]);
-    $(".atc_start_time").text(session["connection_id"]["start"]);
-    $(".atc_end_time").text(session["connection_id"]["end"]);
+    $(".atc_start_time").text(session["connection_id"]["start"].replace("T", " "));
+    $(".atc_end_time").text(session["connection_id"]["end"].replace("T", " "));
     $(".atc_trackedair").text(session["aircrafttracked"]);
     $(".atc_seenair").text(session["aircraftseen"]);
     $(".atc_squawks").text(session["squawksassigned"]);
     $(".atc_transfers").text(session["handoffsinitiated"]);
     $(".atc_received").text(session["handoffsreceived"]);
 }
-
-// Click event handler to left menu button
-$(".fox_atc").click(function() {
-    if ($(this).hasClass("fox_atc_active")) return;
-    
-    $(".fox_atc_active").removeClass("fox_atc_active");
-    $(this).addClass("fox_atc_active");
-
-    showSession(userSession[$(this).attr("id")]);
-})
-
-$(".fox_button").click(function() {
-    if ($(this).hasClass("fox_active")) return;
-
-    $(".fox_active").removeClass("fox_active");
-    $(this).addClass("fox_active");
-
-    showFlight(userFlightplans[$(this).attr("id")]);
-});
