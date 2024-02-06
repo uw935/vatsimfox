@@ -20,4 +20,4 @@ jobs:
           port: 22
           script: |
             cd /home/deploy/vatsimfox && git pull origin master --force && cd /home/deploy/vatsimfox/src
-            docker-compose up -d --build
+            docker compose up -d --build
