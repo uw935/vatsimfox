@@ -19,5 +19,5 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 22
           script: |
-            cd /home/deploy/vatsimfox && git pull origin main --force && cd /home/deploy/vatsimfox/src
+            cd /home/deploy/vatsimfox && git pull origin master --force && cd /home/deploy/vatsimfox/src
             docker-compose up -d --build
