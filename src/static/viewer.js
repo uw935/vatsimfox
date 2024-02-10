@@ -120,7 +120,7 @@ function showFlight(flight) {
 
     // Changing text in each class
     // FP before _ - means flightplan
-    $(".fp_is_filed").text(flight["not_filed"] ? "This flightplan was not filed" : "");
+    $(".fp_is_filed").text(flight["not_filed"] ? "This flightplan wasn't used" : "");
     $(".fp_callsign").text(flight["callsign"]);
     $(".fp_depa_city").text(airports[flight["dep"]]["city"]);
     $(".fp_arra_city").text(airports[flight["arr"]]["city"]);

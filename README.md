@@ -23,13 +23,14 @@ docker compose up
 ## Contibution
 Any help with this project would be greatly appreciated. Fixes or some features are welcome.
 
-More information about the contributing to this project will appear there a little later.
+VATSIM Fox is free software, open to suggestions and contributions. All the files are under the MIT License.
 
 ## Feature
 There is small TODO list I would like to make in this project:
 
 - [x] Create docker
 - [x] Deploy to webserver with domain
+- [ ] Change viewer style to the map, where user could see his airports where he was as a pilot or an ATC.
 - [ ] More ATC information — add map with control area
 - [ ] More profile information — add some more info, not only date of registration. Maybe rating or something
 - [ ] Website redesign
