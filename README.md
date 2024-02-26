@@ -11,7 +11,7 @@
 
 Project based on [Virtual Air Traffic Simulation Network (VATSIM) API](https://vatsim.dev/).
 
-Written in Python 3.7.10 + JS (JQuery framework) + Boostrap
+Written in Python 3.8.18 + JS (JQuery framework) + Boostrap
 
 ## Startup
 For run application on your own machine, you must install docker. Then just one command in the "src" folder with the project source code:
