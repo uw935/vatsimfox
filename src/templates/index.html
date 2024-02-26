@@ -34,11 +34,11 @@
 {% block javascript_code %}
 <script type="text/javascript">
     $(".fox_submit").click(function() {
-        const INPUT_CID = 0 + $(".fox_input").val();
+        const INPUT_CID = $(".fox_input").val();
 
-        if ((0 + INPUT_CID) < 100000) {
-          $(".fox_message").text("CID should be equal or more than 100000");
-          return;
+        if (INPUT_CID < 100000) {
+			$(".fox_message").text("CID should be equal or more than 100000");
+			return;
         }
 
         fetch("/api/request?request_string=members/" + INPUT_CID, {})

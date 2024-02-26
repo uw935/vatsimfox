@@ -1,5 +1,5 @@
-from flask import Flask, render_template, abort, request, jsonify
 import requests
+from flask import Flask, render_template, abort, request, jsonify
 
 
 app = Flask(__name__)
@@ -15,14 +15,12 @@ def index_page():
 def errorhandler_page(_):
     return render_template("4O4.html"), 404
 
-# Custom wrapper to fetch VATSIM data
+
 @app.route("/api/request")
 def request_handler():
-    request_string = request.args.get("request_string")
-
-    if request_string:
+    if request_string := request.args.get("request_string"):
         return requests.get(f"{VATSIM_API_URL}{request_string}").json()
-    
+
     return jsonify({"result": "not found"})
 
 
