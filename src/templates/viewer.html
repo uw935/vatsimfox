@@ -1,12 +1,19 @@
 {% extends "/include/template.html" %}
-{% block title %}User {{user_cid}} statistic — VATSIM Fox{% endblock %}
+{% block title %}User {{user["id"]}} statistic — VATSIM Fox{% endblock %}
 {% block header_css %}
 <link rel="stylesheet" href="{{ url_for('static', filename='viewer.css') }}">
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
 <div class="mb-5">
-    <h2 class="text-center text-primary mb-4">{{data[0]["id"]}}</h2>
+    <div id="notification_wrapper">
+        <div class="mb-4 alert alert-warning" role="alert">
+            <h4 id="notification_title"></h4>
+            <span id="notification_message"></span>
+        </div>
+    </div>
+    
+    <h2 class="text-center text-primary mb-4">{{user["id"]}}</h2>
     <p class="fs-4 text-secondary">Date of registration: <span class="date_registration"></span></p>
 </div>
 
@@ -91,7 +98,7 @@
 
     <div class="col-md" style="height: 321px;">
         <div class="h-auto p-5 bg-light border rounded-3">
-            <h2 class="atc_callsign">UUEE_DEL</h2>
+            <h2 class="atc_callsign">Callsign</h2>
             <span>
                 <b>Start time:</b> 
                 <span class="atc_start_time"></span>
@@ -133,11 +140,11 @@
 {% block javascript_code %}
 <script src="https://unpkg.com/leaflet@1.6.0/dist/leaflet.js"></script>
 <script type="text/javascript">
-    const USER_CID = '{{data[0]["id"]}}';
+    const USER_CID = '{{user["id"]}}';
     const FLIGHTPLANS_API_URL = "/api/request?request_string=members/" + USER_CID + "/flightplans";
     const ATC_API_URL = "/api/request?request_string=members/" + USER_CID + "/atc";
 
-    $(".date_registration").text("{{data[0]['reg_date']}}".replace("T", " "));
+    $(".date_registration").text("{{user['reg_date']}}".replace("T", " "));
 </script>
 <script type="text/javascript" src="{{ url_for('static', filename='viewer.js') }}"></script>
 {% endblock %}

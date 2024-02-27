@@ -19,9 +19,12 @@ def errorhandler_page(_):
 @app.route("/api/request")
 def request_handler():
     if request_string := request.args.get("request_string"):
-        return requests.get(f"{VATSIM_API_URL}{request_string}").json()
+        try:
+            return requests.get(f"{VATSIM_API_URL}{request_string}").json()
+        except requests.exceptions.JSONDecodeError:
+            return jsonify({"result": "error", "message": "Something went wrong. Report that error please"})
 
-    return jsonify({"result": "not found"})
+    return jsonify({"result": "not found", "message": "Not found"})
 
 
 @app.route("/<int:cid>/")
@@ -31,7 +34,7 @@ def viewer_page(cid):
     if "detail" in user and user["detail"] == "Not Found":
         return abort(404)
 
-    return render_template("viewer.html", data=(user, ))
+    return render_template("viewer.html", user=user)
 
 
 if __name__ == "__main__":

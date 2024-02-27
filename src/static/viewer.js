@@ -2,8 +2,10 @@
 let userSession = {};
 
 fetch(ATC_API_URL, {}).then(response => response.json()).then(result => {
-    if (result && result["result"] == "not found")
-        return
+    if (result && (result["result"] == "not found" || result["result"] == "error")) {
+        showAlert("Error while getting ATC information", result["message"]);
+        return;
+    }
 
     for (let session of result["items"]) {
         // Separate each session by it's connection ID
@@ -72,13 +74,13 @@ $.getJSON("/static/data/airports.json", function(json) {
 
 // Map creation
 const MAP_ELEMENT = L.map("fox_map");
-const MAP_DEFAULT_TARGET = L.latLng("47.50737", "19.04611");
-const MAP_DEFAULT_ZOOM_VIEW = 14;
+const MAP_DEFAULT_ZOOM_VIEW = 2;
+const MAP_DEFAULT_TARGET = L.latLng("0", "0");
 let line = null;
 
 MAP_ELEMENT.setView(MAP_DEFAULT_TARGET, MAP_DEFAULT_ZOOM_VIEW);
 
-L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     subdomains: "abcd",
     maxZoom: 20,
@@ -152,4 +154,10 @@ function showSession(session) {
     $(".atc_squawks").text(session["squawksassigned"]);
     $(".atc_transfers").text(session["handoffsinitiated"]);
     $(".atc_received").text(session["handoffsreceived"]);
+}
+
+function showAlert(title, message) {
+    $("#notification_wrapper").css("display", "block");
+    $("#notification_title").text(title);
+    $("#notification_message").text(message);
 }

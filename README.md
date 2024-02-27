@@ -1,7 +1,7 @@
 <br>
 <p align="center">
     <img align="center" src="media/cover.png">
-    <h3 align="center">VATSIM Fox</h3>
+    <h3 align="center">VATSIM Fox — v1.2</h3>
     <p align="center">Website to find out your detailed VATSIM stastic</p>
 </p>
 <br>
@@ -14,7 +14,7 @@ Project based on [Virtual Air Traffic Simulation Network (VATSIM) API](https://v
 Written in Python 3.8.18 + JS (JQuery framework) + Boostrap
 
 ## Startup
-For run application on your own machine, you must install docker. Then just one command in the "src" folder with the project source code:
+To run application on your own machine, you must install docker. Then just one command in the "src" folder with the project source code:
 
 ```bash
 docker compose up
@@ -37,6 +37,8 @@ python -m venv venv
 # downloading requirements && upgrading pip
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+# starting application
+python -m flask run --host 0.0.0.0 --debug
 ```
 
 ## Feature

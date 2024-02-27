@@ -18,8 +18,20 @@
     {% block header_css %}{% endblock %}
 </head>
 <style>
+    .btn-outline-primary:hover, .btn-outline-primary:active {
+        color: white !important;
+        background-color: var(--main-rgb) !important;
+        border-color: var(--main-rgb) !important;
+    }
+
+    .btn-outline-primary {
+        border-color: var(--main-rgb);
+        color: var(--main-rgb);
+    }
+
 	:root {
-	--bs-primary-rgb: 250, 130, 50
+        --main-rgb: #FA8232;
+		--bs-primary-rgb: 250, 130, 50
 	}
 </style>
 <body>
@@ -33,13 +45,13 @@
 
            {% block content %}{% endblock %}
       
-          <footer class="pt-3 mt-4 text-muted border-top">
-            created by <a href="https://uw935.t.me/" style="text-decoration: underline; cursor: pointer;">uw935</a> (1606255)
-          </footer>
-        </div>
-      </main>
+			<footer class="pt-3 mt-4 text-muted border-top">
+			created by <a href="https://uw935.t.me/" style="text-decoration: underline; cursor: pointer;">uw935</a> (1606255)
+			</footer>
+		</div>
+	</main>
 
-      <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
-      {% block javascript_code %}{% endblock %}
+	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+	{% block javascript_code %}{% endblock %}
 </body>
 </html>
