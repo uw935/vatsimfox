@@ -11,7 +11,7 @@
 
 Project based on [Virtual Air Traffic Simulation Network (VATSIM) API](https://vatsim.dev/).
 
-Written in Python 3.7.10 + JS (JQuery framework) + Boostrap
+Written in Python 3.8.18 + JS (JQuery framework) + Boostrap
 
 ## Startup
 For run application on your own machine, you must install docker. Then just one command in the "src" folder with the project source code:
@@ -24,6 +24,20 @@ docker compose up
 Any help with this project would be greatly appreciated. Fixes or some features are welcome.
 
 VATSIM Fox is free software, open to suggestions and contributions. All the files are under the MIT License.
+
+### How to set virtual environment
+
+```bash
+# you must be in "src" folder before init
+cd src
+
+python -m venv venv
+.\venv\Scripts\activate
+
+# downloading requirements && upgrading pip
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
 
 ## Feature
 There is small TODO list I would like to make in this project:
