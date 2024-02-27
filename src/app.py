@@ -19,7 +19,10 @@ def errorhandler_page(_):
 @app.route("/api/request")
 def request_handler():
     if request_string := request.args.get("request_string"):
-        return requests.get(f"{VATSIM_API_URL}{request_string}").json()
+        try:
+            return requests.get(f"{VATSIM_API_URL}{request_string}").json()
+        except requests.exceptions.JSONDecodeError:
+            return jsonify({"result": "not found"})
 
     return jsonify({"result": "not found"})
 

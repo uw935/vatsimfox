@@ -1,85 +1,84 @@
-// Fetching user's ATC session informations from API
-let userSession = {};
+// // Fetching user's ATC session informations from API
+// let userSession = {};
 
-fetch(ATC_API_URL, {}).then(response => response.json()).then(result => {
-    if (result && result["result"] == "not found")
-        return
+// fetch(ATC_API_URL, {}).then(response => response.json()).then(result => {
+//     if (result && result["result"] == "not found")
+//         return
 
-    for (let session of result["items"]) {
-        // Separate each session by it's connection ID
-        let session_id = session["connection_id"]["id"];
-        userSession[session_id] = session;
+//     for (let session of result["items"]) {
+//         // Separate each session by it's connection ID
+//         let session_id = session["connection_id"]["id"];
+//         userSession[session_id] = session;
 
-        // Long line. Not in the whole file, but still bad
-        // Open to any suggestions about fix it
-        let sessionElement = "<div id='" + session_id + "' class='fox_button fox_atc mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + session["connection_id"]["callsign"] + "</div>";
-        $("#fox_atc").append(sessionElement);
-    }
+//         // Long line. Not in the whole file, but still bad
+//         // Open to any suggestions about fix it
+//         let sessionElement = "<div id='" + session_id + "' class='fox_button fox_atc mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + session["connection_id"]["callsign"] + "</div>";
+//         $("#fox_atc").append(sessionElement);
+//     }
 
-    // Click event handler to left menu button
-    $(".fox_atc").click(function() {
-        if ($(this).hasClass("fox_atc_active")) return;
+//     // Click event handler to left menu button
+//     $(".fox_atc").click(function() {
+//         if ($(this).hasClass("fox_atc_active")) return;
         
-        $(".fox_atc_active").removeClass("fox_atc_active");
-        $(this).addClass("fox_atc_active");
+//         $(".fox_atc_active").removeClass("fox_atc_active");
+//         $(this).addClass("fox_atc_active");
 
-        showSession(userSession[$(this).attr("id")]);
-    });
+//         showSession(userSession[$(this).attr("id")]);
+//     });
 
-    showSession(result["items"][0]);
-});
+//     showSession(result["items"][0]);
+// });
 
-// Fetching user's flightplans from VATSIM API
-let userFlightplans = {};
+// // Fetching user's flightplans from VATSIM API
+// let userFlightplans = {};
 
-fetch(FLIGHTPLANS_API_URL, {}).then(response => response.json()).then(result => {
-    if (result && result["result"] == "not found")
-        return
+// fetch(FLIGHTPLANS_API_URL, {}).then(response => response.json()).then(result => {
+//     if (result && result["result"] == "not found")
+//         return
 
-    for (let flightplan of result) {
-        // Separate each flight by it's connection ID
-        // Like it was with ATC session's
-        let flightplan_id = flightplan["id"]
-        userFlightplans[flightplan_id] = flightplan;
-        userFlightplans[flightplan_id]["not_filed"] = flightplan["connection_id"] === 0
+//     for (let flightplan of result) {
+//         // Separate each flight by it's connection ID
+//         // Like it was with ATC session's
+//         let flightplan_id = flightplan["id"]
+//         userFlightplans[flightplan_id] = flightplan;
+//         userFlightplans[flightplan_id]["not_filed"] = flightplan["connection_id"] === 0
         
-        // Long line again
-        let flightplanElement = "<div id="+ flightplan_id +" class='fox_button mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + flightplan["callsign"] + "</div>";
-        $("#fox_flightplans").append(flightplanElement);
-    }
+//         // Long line again
+//         let flightplanElement = "<div id="+ flightplan_id +" class='fox_button mb-2 p-2 text-center text-bg-white border border-1 rounded-3'>" + flightplan["callsign"] + "</div>";
+//         $("#fox_flightplans").append(flightplanElement);
+//     }
 
-    $(".fox_button").click(function() {
-        if ($(this).hasClass("fox_active")) return;
+//     $(".fox_button").click(function() {
+//         if ($(this).hasClass("fox_active")) return;
     
-        $(".fox_active").removeClass("fox_active");
-        $(this).addClass("fox_active");
+//         $(".fox_active").removeClass("fox_active");
+//         $(this).addClass("fox_active");
     
-        showFlight(userFlightplans[$(this).attr("id")]);
-    });
+//         showFlight(userFlightplans[$(this).attr("id")]);
+//     });
 
-    showFlight(result[0]);
-});
+//     showFlight(result[0]);
+// });
 
-// Fetching airports information
-// Get it from localhost
-// Becase I think it would be much faster than getting it from VATSIM API
-let airports = {};
+// // Fetching airports information
+// // Get it from localhost
+// // Becase I think it would be much faster than getting it from VATSIM API
+// let airports = {};
 
-$.getJSON("/static/data/airports.json", function(json) {
-        airports = json;
-    }
-);
+// $.getJSON("/static/data/airports.json", function(json) {
+//         airports = json;
+//     }
+// );
 
 // Map creation
 const MAP_ELEMENT = L.map("fox_map");
-const MAP_DEFAULT_TARGET = L.latLng("47.50737", "19.04611");
-const MAP_DEFAULT_ZOOM_VIEW = 14;
+const MAP_DEFAULT_TARGET = L.latLng("0", "0");
+const MAP_DEFAULT_ZOOM_VIEW = 2;
 let line = null;
-
 MAP_ELEMENT.setView(MAP_DEFAULT_TARGET, MAP_DEFAULT_ZOOM_VIEW);
 
-L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
+L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors | VATSIM Fox by <a href="https://uw935.t.me/" style="text-decoration: underline; cursor: pointer;">uw935</a> (1606255)',
     subdomains: "abcd",
     maxZoom: 20,
     minZoom: 2
