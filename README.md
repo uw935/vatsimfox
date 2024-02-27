@@ -25,6 +25,20 @@ Any help with this project would be greatly appreciated. Fixes or some features 
 
 VATSIM Fox is free software, open to suggestions and contributions. All the files are under the MIT License.
 
+### How to set virtual environment
+
+```bash
+# you must be in "src" folder before init
+cd src
+
+python -m venv venv
+.\venv\Scripts\activate
+
+# downloading requirements && upgrading pip
+python -m pip install --upgrade pip
+python -m pip install -r requirements.txt
+```
+
 ## Feature
 There is small TODO list I would like to make in this project:
 
