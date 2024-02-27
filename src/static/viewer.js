@@ -2,8 +2,10 @@
 let userSession = {};
 
 fetch(ATC_API_URL, {}).then(response => response.json()).then(result => {
-    if (result && result["result"] == "not found")
-        return
+    if (result && (result["result"] == "not found" || result["result"] == "error")) {
+        showAlert("Error while getting ATC information", result["message"]);
+        return;
+    }
 
     for (let session of result["items"]) {
         // Separate each session by it's connection ID
@@ -143,7 +145,7 @@ function showFlight(flight) {
 // Function to show ATC session 
 function showSession(session) {
     if (!session) return;
-    console.log(session);
+
     $(".atc_callsign").text(session["connection_id"]["callsign"]);
     $(".atc_start_time").text(session["connection_id"]["start"].replace("T", " "));
     $(".atc_end_time").text(session["connection_id"]["end"].replace("T", " "));
@@ -152,4 +154,10 @@ function showSession(session) {
     $(".atc_squawks").text(session["squawksassigned"]);
     $(".atc_transfers").text(session["handoffsinitiated"]);
     $(".atc_received").text(session["handoffsreceived"]);
+}
+
+function showAlert(title, message) {
+    $("#notification_wrapper").css("display", "block");
+    $("#notification_title").text(title);
+    $("#notification_message").text(message);
 }

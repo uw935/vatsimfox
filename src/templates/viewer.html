@@ -6,6 +6,13 @@
 {% endblock %}
 {% block content %}
 <div class="mb-5">
+    <div id="notification_wrapper">
+        <div class="mb-4 alert alert-warning" role="alert">
+            <h4 id="notification_title"></h4>
+            <span id="notification_message"></span>
+        </div>
+    </div>
+    
     <h2 class="text-center text-primary mb-4">{{user["id"]}}</h2>
     <p class="fs-4 text-secondary">Date of registration: <span class="date_registration"></span></p>
 </div>

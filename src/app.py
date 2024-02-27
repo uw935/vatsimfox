@@ -22,9 +22,9 @@ def request_handler():
         try:
             return requests.get(f"{VATSIM_API_URL}{request_string}").json()
         except requests.exceptions.JSONDecodeError:
-            return jsonify({"result": "not found"})
+            return jsonify({"result": "error", "message": "Something went wrong. Report that error please"})
 
-    return jsonify({"result": "not found"})
+    return jsonify({"result": "not found", "message": "Not found"})
 
 
 @app.route("/<int:cid>/")

@@ -18,7 +18,19 @@
     {% block header_css %}{% endblock %}
 </head>
 <style>
+    .btn-outline-primary:hover, .btn-outline-primary:active {
+        color: white !important;
+        background-color: var(--main-rgb) !important;
+        border-color: var(--main-rgb) !important;
+    }
+
+    .btn-outline-primary {
+        border-color: var(--main-rgb);
+        color: var(--main-rgb);
+    }
+
 	:root {
+        --main-rgb: #FA8232;
 		--bs-primary-rgb: 250, 130, 50
 	}
 </style>
