@@ -72,13 +72,13 @@ $.getJSON("/static/data/airports.json", function(json) {
 
 // Map creation
 const MAP_ELEMENT = L.map("fox_map");
-const MAP_DEFAULT_TARGET = L.latLng("47.50737", "19.04611");
-const MAP_DEFAULT_ZOOM_VIEW = 14;
+const MAP_DEFAULT_ZOOM_VIEW = 2;
+const MAP_DEFAULT_TARGET = L.latLng("0", "0");
 let line = null;
 
 MAP_ELEMENT.setView(MAP_DEFAULT_TARGET, MAP_DEFAULT_ZOOM_VIEW);
 
-L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
+L.tileLayer("https://cartodb-basemaps-{s}.global.ssl.fastly.net/light_all/{z}/{x}/{y}.png", {
     attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
     subdomains: "abcd",
     maxZoom: 20,
@@ -143,7 +143,7 @@ function showFlight(flight) {
 // Function to show ATC session 
 function showSession(session) {
     if (!session) return;
-
+    console.log(session);
     $(".atc_callsign").text(session["connection_id"]["callsign"]);
     $(".atc_start_time").text(session["connection_id"]["start"].replace("T", " "));
     $(".atc_end_time").text(session["connection_id"]["end"].replace("T", " "));

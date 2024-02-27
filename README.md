@@ -1,7 +1,7 @@
 <br>
 <p align="center">
     <img align="center" src="media/cover.png">
-    <h3 align="center">VATSIM Fox</h3>
+    <h3 align="center">VATSIM Fox — v1.2</h3>
     <p align="center">Website to find out your detailed VATSIM stastic</p>
 </p>
 <br>
@@ -37,6 +37,8 @@ python -m venv venv
 # downloading requirements && upgrading pip
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
+# starting application
+python -m flask run --host 0.0.0.0 --debug
 ```
 
 ## Feature
