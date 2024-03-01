@@ -8,6 +8,7 @@
 }
 
 #fox_map {
+    position: fixed;
     width: 100%;
-    height: 500px;
+    height: 100%;
 }
