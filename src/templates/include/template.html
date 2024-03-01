@@ -36,19 +36,26 @@
 </style>
 <body>
     <main>
-        <div class="container py-4">
-            <header class="pb-3 mb-4 border-bottom">
+        <header class="border-bottom">
+            <div class="container py-4">
                 <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
-                  <span class="fs-4">🦊 VATSIM <span class="text-primary">Fox</span></span>
+                    <span class="fs-4">🦊 VATSIM <span class="text-primary">Fox</span></span>
                 </a>
-            </header>
+            </div>
+        </header>
 
+        <div class="container py-4">
            {% block content %}{% endblock %}
-      
-			<footer class="pt-3 mt-4 text-muted border-top">
-			created by <a href="https://uw935.t.me/" style="text-decoration: underline; cursor: pointer;">uw935</a> (1606255)
-			</footer>
-		</div>
+        </div>
+
+        <footer class="text-muted border-top">
+            <div class="container py-4">
+                created by 
+                <a href="https://uw935.t.me/" style="text-decoration: underline; cursor: pointer;">
+                    uw935
+                </a> (1606255)
+            </div>
+        </footer>
 	</main>
 
 	<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
