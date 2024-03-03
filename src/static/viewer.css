@@ -7,6 +7,9 @@
     background-color: #dee2e6 !important;
 }
 
-#notification_wrapper {
-    display: none;
+#fox_map {
+    box-sizing: border-box;
+    position: absolute;
+    width: 100%;
+    height: calc(100% - 5rem);
 }
