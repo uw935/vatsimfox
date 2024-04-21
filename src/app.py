@@ -61,10 +61,13 @@ async def get_viewer_page(request: Request, cid: str = None):
     :param cid: User CID
     :return: HTML template
     """
+    try:
+        user = requests.get(f"{VATSIM_API_URL}members/{cid}").json()
+    except requests.exceptions.JSONDecodeError:
+        raise HTTPException(404)
 
-    user = requests.get(f"{VATSIM_API_URL}members/{cid}").json()
     if "detail" in user and user["detail"] == "Not Found":
-        return HTTPException(404)
+        raise HTTPException(404)
 
     return templates.TemplateResponse(
         name="viewer.html",
