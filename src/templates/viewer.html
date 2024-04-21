@@ -1,7 +1,7 @@
 {% extends "/include/template.html" %}
 {% block title %}User {{user["id"]}} statistic — VATSIM Fox{% endblock %}
 {% block header_css %}
-<link rel="stylesheet" href="{{ url_for('static', filename='viewer.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', path='viewer.css') }}">
 <link href="https://unpkg.com/leaflet@1.6.0/dist/leaflet.css" rel="stylesheet"/>
 {% endblock %}
 {% block content %}
@@ -146,5 +146,5 @@
 
     $(".date_registration").text("{{user['reg_date']}}".replace("T", " "));
 </script>
-<script type="text/javascript" src="{{ url_for('static', filename='viewer.js') }}"></script>
+<script type="text/javascript" src="{{ url_for('static', path='viewer.js') }}"></script>
 {% endblock %}
